@@ -6,16 +6,24 @@ int main(int argc, char* argv[]){
 	
 	/**/ //Affiche les arguments du programme
 	int i = 0;
-	printf("argc : %d", argc); ligne
+	printf("argc : %d", argc);ligne
 	for(i = 0; i<argc; i++){
-		printf("argc[%d] : %s\n", i, argv[i]);
+		printf("argv[%d] : %s", i, argv[i]);ligne
 	}
 	/**/
 	
 	if(argc == 3){
+		
+		int n1 = atoi(argv[1]);
+		printf("n1 = %d", n1);ligne
+		
 		mpz_t n;
+		
+		
 		mpz_init(n);
-		printf("%d\n", n);
+		//mpz_set_si(n, n1); //Ici, on se sert de la valeur du atoi() précédent pour chopper la valeur n
+		mpz_set_str(n, argv[1], 10); //Permet ne se pas se limiter par le int maximum pour notre n
+		printf("%p", n);ligne
 		mpz_clear(n);
 		
 		return 0;
