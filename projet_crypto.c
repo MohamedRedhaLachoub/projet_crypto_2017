@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void square_and_multiply(mpz_t res, mpz_t a, mpz_t exp, mpz_t n){
+void square_and_multiply(mpz_t res, mpz_t a, mpz_t exp, mpz_t mod){
 	//a^exp mod n
 	mpz_t r; int i;
 	char* binexp;
@@ -12,11 +12,11 @@ void square_and_multiply(mpz_t res, mpz_t a, mpz_t exp, mpz_t n){
 
 	for(i = strlen(binexp)-1; i>=0; i--){
 		mpz_mul(r, r, r);
-		mpz_mod(r, r, n);
+		mpz_mod(r, r, mod);
 
 		if(binexp[i] == '1'){
 			mpz_mul(r, r, a);
-			mpz_mod(r, r, n);
+			mpz_mod(r, r, mod);
 		}
 	}
 
