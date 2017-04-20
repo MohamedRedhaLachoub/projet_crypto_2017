@@ -11,7 +11,8 @@ void square_and_multiply(mpz_t res, mpz_t a, mpz_t exp, mpz_t mod){
 	binexp = mpz_get_str(NULL, 2, exp); // Transformation de l'exposant au format binaire.
 	printf("binexp : %s\n", binexp);
 
-	for(i = strlen(binexp)-1; i>=0; i--){
+	for(i=1 ; i<=strlen(binexp)-1; i++){
+		printf("i=%d et bine=%c",i,binexp[i]); 
 		mpz_mul(r, r, r);
 		mpz_mod(r, r, mod);
 		if(binexp[i] == '1'){
