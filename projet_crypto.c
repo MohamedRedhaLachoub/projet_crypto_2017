@@ -13,12 +13,7 @@ int main(int argc, char* argv[]){
 	/**/
 	
 	if(argc == 3){
-		
-		int n1 = atoi(argv[1]);
-		printf("n1 = %d", n1);ligne
-		
 		mpz_t n;
-		
 		
 		mpz_init(n);
 		//mpz_set_si(n, n1); //Ici, on se sert de la valeur du atoi() précédent pour chopper la valeur n
