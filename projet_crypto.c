@@ -9,11 +9,11 @@ void square_and_multiply(mpz_t res, mpz_t a, mpz_t exp, mpz_t mod){
 
 	mpz_init_set(r, a);//On met a dans r
 	binexp = mpz_get_str(NULL, 2, exp); // Transformation de l'exposant au format binaire.
+	printf("binexp : %s\n", binexp);
 
 	for(i = strlen(binexp)-1; i>=0; i--){
 		mpz_mul(r, r, r);
 		mpz_mod(r, r, mod);
-
 		if(binexp[i] == '1'){
 			mpz_mul(r, r, a);
 			mpz_mod(r, r, mod);
@@ -21,6 +21,13 @@ void square_and_multiply(mpz_t res, mpz_t a, mpz_t exp, mpz_t mod){
 	}
 
 	mpz_set(res, r);
+	mpz_clear(r);
+
+	//Affichage test
+	mpz_t res2;
+	mpz_init(res2);
+	mpz_powm(res2, a, exp, mod);
+	printf("fonction de la gmp : %s\n", mpz_get_str(NULL, 10, res2));
 }
 
 int main(int argc, char* argv[]){
