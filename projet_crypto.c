@@ -43,7 +43,7 @@ int test_de_fermat(mpz_t n,int k)
 	mpz_init(a);
 	mpz_t limite;
 	mpz_init_set(limite, n);
-	mpz_sub_ui(limite,limite,2);
+	mpz_sub_ui(limite,limite,1);
 	
 	gmp_randstate_t state;
 	gmp_randinit_default(state);
