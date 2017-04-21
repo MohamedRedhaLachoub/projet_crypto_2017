@@ -7,7 +7,7 @@
 			
 void square_and_multiply(mpz_t res, mpz_t a, mpz_t exp, mpz_t mod){
 	//a^exp mod n
-	mpz_t r; int i;
+	mpz_t r; long long int i;
 	char* binexp;
 
 	mpz_init_set(r, a);//On met a dans r
@@ -28,10 +28,10 @@ void square_and_multiply(mpz_t res, mpz_t a, mpz_t exp, mpz_t mod){
 	mpz_clear(r);
 
 	//Affichage test
-	mpz_t res2;
+	/*mpz_t res2;
 	mpz_init(res2);
 	mpz_powm(res2, a, exp, mod);
-	//printf("fonction de la gmp : %s\n", mpz_get_str(NULL, 10, res2));
+	printf("fonction de la gmp : %s\n", mpz_get_str(NULL, 10, res2));*/
 }
 
 int test_de_fermat(mpz_t n,int k)
@@ -56,6 +56,7 @@ int test_de_fermat(mpz_t n,int k)
 					return 0;
 				}
 	}
+	
 	mpz_clear(limite);
 	mpz_clear(restmp);
 	mpz_clear(a);
