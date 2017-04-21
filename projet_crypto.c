@@ -43,9 +43,13 @@ int test_de_fermat(mpz_t n,int k)
 	mpz_init(a);
 	mpz_t limite;
 	mpz_init_set(limite, n);
-	mpz_sub_ui(limite,limite,1);
+	mpz_sub_ui(limite,limite,2);
+	
 	gmp_randstate_t state;
 	gmp_randinit_default(state);
+	
+	//Il faut ajouter un cas spécial si n est égal à 2 car on doit avoir un a compris en 1 et n-1 qui se trouve être 1
+	
 	for(i=1;i<=k;i++)
 	{
 		mpz_urandomm(a,state,limite);//Genere l'entier a aleatoirement entre 0 < a < n-1
