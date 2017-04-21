@@ -69,6 +69,58 @@ int test_de_fermat(mpz_t n,int k){
 }	
 
 //miller rabin, tant que t%2 est 0, t/2, s+1. t = n-1, s est le nombre de division par 2 faites. <-- Initialisation du t ;)
+int miller_rabin(mpz_t n, int k){
+	mpz_t n1, t, a, y, two;
+	int s = 0, i, j, donot = 0;
+	
+	mpz_inits(a, y, NULL);
+	mpz_init_set(n1, n);
+	mpz_init_set_ui(two, 2);
+	mpz_sub_ui(n1, n1, 1);	
+	
+	
+	gmp_randstate_t state;
+	gmp_randinit_default(state);
+	
+	mpz_init_set(t, n1); //On commence avec t = n-1 qui sera pair de base.
+	if(mpz_even_p(t)){ //Tant que t est pair
+		mpz_div_ui(t, t, 2); //On divise t par 2
+		s++; // Et on compte le nombre de fois où on divise t
+	}
+	
+	if(mpz_odd_p(t)){
+		printf("t est impair\n");
+	}
+	
+	for(i = 0; i<k; i++){
+		mpz_urandomm(a, state, n1);//Genere l'entier a aleatoirement entre 0 < a < n
+		mpz_add_ui(a, a, 1);
+		square_and_multiply(y, a, t, n);
+		donot = 0;
+		if(mpz_cmp_ui(y, 1) != 0 && mpz_cmp_si(y, -1) != 0){
+			for(j = 1; j<s; j++){
+				square_and_multiply(y, y, two, n);
+				if(mpz_cmp_ui(y, 1) == 0){
+					return 0;
+				}
+				if(mpz_cmp_si(y, -1) == 0){
+					j = s; //On sort du for j
+					break;
+				//	donot = 1;//On ne le marque pas comme composé
+				}
+			}
+			return 0;
+			/*if(donot == 0){
+				return 0;
+			}*/
+		}
+	}
+	return 1;
+	
+	gmp_printf("t : %Zd, ", t);
+	printf("s = %d\n", s);
+	mpz_clears(n1, a, y, two, NULL);
+}
 
 int main(int argc, char* argv[]){
 
@@ -95,6 +147,14 @@ int main(int argc, char* argv[]){
 			printf("Test de Fermat = Premier\n");
 		}else{
 			printf("Test de Fermat = Composé\n");
+		}
+		
+		bool = miller_rabin(n, k);
+		if(bool){
+			printf("Test de Miller-Rabin = Premier\n");
+		}
+		else{
+			printf("Test de Miller-Rabin = Composé\n");
 		}
 		
 		mpz_clears(n, res, NULL);
