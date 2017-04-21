@@ -37,33 +37,36 @@ void square_and_multiply(mpz_t res, mpz_t a, mpz_t exp, mpz_t mod){
 int test_de_fermat(mpz_t n,int k)
 {
 	int i;
-	mpz_t restmp;
+	mpz_t restmp, a, limite, n1;
+	
 	mpz_init(restmp);
-	mpz_t a;
-	mpz_init(a);
-	mpz_t limite;
-	mpz_init_set(limite, n);
-	mpz_sub_ui(limite,limite,1);
+	
+	mpz_init(a); // a est l'entier aléatoire dans a^n-1 mod n qui est compris en 1 et n-1
+	
+	mpz_init_set(n1, n); // On utilise n1 pour stocker n-1
+	mpz_sub_ui(n1, n1, 1);
+	
+	mpz_init_set(limite, n); //On initialise la limite à n-2 pour pouvoir générer un nombre aléatoire 1 < a < n-1
+	mpz_sub_ui(limite,limite,2);
 	
 	gmp_randstate_t state;
 	gmp_randinit_default(state);
 	
 	//Il faut ajouter un cas spécial si n est égal à 2 car on doit avoir un a compris en 1 et n-1 qui se trouve être 1
 	
-	for(i=1;i<=k;i++)
-	{
-		mpz_urandomm(a,state,limite);//Genere l'entier a aleatoirement entre 0 < a < n-1
-		mpz_add_ui(a,a,1); //Genere l'entier a aleatoirement entre 1 < a < n-1
-		square_and_multiply(restmp,a,limite,n); // Effectue a^n-1 mod n
-			if ( mpz_cmp_ui(restmp,1)!=0) // verifie si le resultat est different de 1
-				{
-					return 0;
-				}
+	for(i=1;i<=k;i++){
+		mpz_urandomm(a, state, limite);//Genere l'entier a aleatoirement entre 0 < a < n-2
+		mpz_add_ui(a, a, 1); //Genere l'entier a aleatoirement entre 1 < a < n-1
+		square_and_multiply(restmp, a, n1, n); // Effectue a^n-1 mod n
+		if(mpz_cmp_ui(restmp, 1) != 0){ // verifie si le resultat est different de 1
+			return 0;
+		}
 	}
 	
 	mpz_clear(limite);
 	mpz_clear(restmp);
 	mpz_clear(a);
+	mpz_clear(n1);
 	return 1;
 }	
 
