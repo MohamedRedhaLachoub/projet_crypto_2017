@@ -34,8 +34,8 @@ void square_and_multiply(mpz_t res, mpz_t a, mpz_t exp, mpz_t mod){
 	printf("fonction de la gmp : %s\n", mpz_get_str(NULL, 10, res2));*/
 }
 
-int test_de_fermat(mpz_t n,int k)
-{
+int test_de_fermat(mpz_t n,int k){
+	
 	int i;
 	mpz_t restmp, a, limite, n1;
 	
@@ -55,7 +55,7 @@ int test_de_fermat(mpz_t n,int k)
 		return 1;
 	}
 	
-	for(i=1;i<=k;i++){
+	for(i = 0 ; i < k; i++){
 		mpz_urandomm(a, state, limite);//Genere l'entier a aleatoirement entre 0 < a < n-2
 		mpz_add_ui(a, a, 1); //Genere l'entier a aleatoirement entre 1 < a < n-1
 		square_and_multiply(restmp, a, n1, n); // Effectue a^n-1 mod n
@@ -64,7 +64,7 @@ int test_de_fermat(mpz_t n,int k)
 		}
 	}
 		
-	mpz_clears(limite, restmp, a, n1, NULL);
+	mpz_clears(limite, restmp, a, n1, state, NULL);
 	return 1;
 }	
 
@@ -81,7 +81,7 @@ int main(int argc, char* argv[]){
 	*/
 
 	if(argc == 3){
-		mpz_t n, res; int k,bool;
+		mpz_t n, res; int k, bool;
 		k = atoi(argv[2]);
 
 		mpz_init(res);
