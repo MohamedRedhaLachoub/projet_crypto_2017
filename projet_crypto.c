@@ -63,6 +63,8 @@ int test_de_fermat(mpz_t n,int k)
 	return 1;
 }	
 
+//miller rabin, tant que t%2 est 0, t/2, s+1. t = n-1, s est le nombre de division par 2 faites. <-- Initialisation du t ;)
+
 int main(int argc, char* argv[]){
 
 	/* //Affiche les arguments du programme
