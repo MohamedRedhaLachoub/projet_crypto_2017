@@ -52,7 +52,10 @@ int test_de_fermat(mpz_t n,int k)
 	gmp_randstate_t state;
 	gmp_randinit_default(state);
 	
-	//Il faut ajouter un cas spécial si n est égal à 2 car on doit avoir un a compris en 1 et n-1 qui se trouve être 1
+	//Cas spécial si n est égal à 2 car on a un problème quand on essaye de trouver un a car on essaie de le générer 1 < a < 1
+	if(mpz_cmp_ui(n, 2) == 0){
+		return 1;
+	}
 	
 	for(i=1;i<=k;i++){
 		mpz_urandomm(a, state, limite);//Genere l'entier a aleatoirement entre 0 < a < n-2
