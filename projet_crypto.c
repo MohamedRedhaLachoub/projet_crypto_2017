@@ -39,9 +39,7 @@ int test_de_fermat(mpz_t n,int k)
 	int i;
 	mpz_t restmp, a, limite, n1;
 	
-	mpz_init(restmp);
-	
-	mpz_init(a); // a est l'entier aléatoire dans a^n-1 mod n qui est compris en 1 et n-1
+	mpz_inits(restmp, a, NULL); //Initialisation de restmp et a à 0. a est l'entier aléatoire dans a^n-1 mod n qui est compris en 1 et n-1
 	
 	mpz_init_set(n1, n); // On utilise n1 pour stocker n-1
 	mpz_sub_ui(n1, n1, 1);
@@ -65,11 +63,8 @@ int test_de_fermat(mpz_t n,int k)
 			return 0;
 		}
 	}
-	
-	mpz_clear(limite);
-	mpz_clear(restmp);
-	mpz_clear(a);
-	mpz_clear(n1);
+		
+	mpz_clears(limite, restmp, a, n1, NULL);
 	return 1;
 }	
 
@@ -89,25 +84,24 @@ int main(int argc, char* argv[]){
 		mpz_t n, res; int k,bool;
 		k = atoi(argv[2]);
 
-		//mpz_init(n); //On initialise le n en même temps que lui donner la valeur plus bas.
 		mpz_init(res);
 		mpz_init_set_str(n, argv[1], 10); //Permet ne se pas se limiter par le int maximum pour notre n
+
 		gmp_printf("n : %Zd\n",n);
 		printf("k : %d\n", k);
-		//mpz_powm_ui(res, n, k, mod); //On n'a pas le droit d'utiliser cette fonction, il faut utiliser square and multiply.
-		bool=test_de_fermat(n,k);
-		if(bool)
-		{
+		
+		bool = test_de_fermat(n,k);
+		if(bool){
 			printf("Test de Fermat = Premier\n");
 		}else{
 			printf("Test de Fermat = Composé\n");
 		}
-		mpz_clear(n);
+		
+		mpz_clears(n, res, NULL);
 		return 0;
 	}
 	else{
 		printf("Vous n'avez pas entrer le bon nombre d'arguments lors du lancement du programme.\n");
 		return 1;
 	}
-
 }
