@@ -89,12 +89,11 @@ int miller_rabin(mpz_t n, int k){
 		s++; // Et on compte le nombre de fois où on divise t
 	}
 	
-	gmp_printf("t : %Zd, s : %d\n", t, s);
+	//gmp_printf("t : %Zd, s : %d\n", t, s);
 	
 	for(i = 0; i<k; i++){
 		mpz_urandomm(a, state, n2);//Genere l'entier a aleatoirement entre 0 < a < n
 		mpz_add_ui(a, a, 1);
-		gmp_printf("%Zd \n",a);
 		square_and_multiply(y, a, t, n);
 		cond=0;
 		if(mpz_cmp_ui(y, 1) != 0 && mpz_cmp(y, n1) != 0){
