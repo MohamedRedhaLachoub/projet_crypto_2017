@@ -10,7 +10,7 @@ void square_and_multiply(mpz_t res, mpz_t a, mpz_t exp, mpz_t mod){
 
 	mpz_init_set(r, a);//On met a dans r
 	binexp = mpz_get_str(NULL, 2, exp); // Transformation de l'exposant au format binaire.
-	//printf("binexp : %s\n", binexp);
+	//printf("binexp : %s\n", binexp); //Affichage de l'exposant au format binaire pour tests.
 
 	for(i=1 ; i<strlen(binexp); i++){
 		//printf("i=%d et bine=%c/n",i,binexp[i]);// test pour afficher le tableau binaire
@@ -46,7 +46,7 @@ int test_de_fermat(mpz_t n,int k){
 	mpz_sub_ui(limite,limite,2);
 	
 	gmp_randstate_t state;
-	gmp_randinit_default(state);
+	gmp_randinit_default(state);//Initialisation du rand
 	
 	//Cas spécial si n est égal à 2 car on a un problème quand on essaye de trouver un a car on essaie de le générer 1 < a < 1
 	if(mpz_cmp_ui(n, 2) == 0){
@@ -66,7 +66,7 @@ int test_de_fermat(mpz_t n,int k){
 	return 1;
 }	
 
-//miller rabin, tant que t%2 est 0, t/2, s+1. t = n-1, s est le nombre de division par 2 faites. <-- Initialisation du t ;)
+
 int miller_rabin(mpz_t n, int k){
 	mpz_t n1, n2, t, a, y, two;
 	int s = 0, i, j, cond;
@@ -74,14 +74,19 @@ int miller_rabin(mpz_t n, int k){
 	mpz_inits(a, y, NULL);
 	mpz_init_set(n1, n);
 	mpz_init_set(n2, n);
-	mpz_init_set_ui(two, 2);
+	mpz_init_set_ui(two, 2);//On stocke 2 dans un mpz_t pour pouvoir l'utiliser dans l'appel de square_and_multiply lors de la boucle principale
 	mpz_sub_ui(n1, n1, 1);	
 	mpz_sub_ui(n2, n1, 1);
 	
 	gmp_randstate_t state;
 	gmp_randinit_default(state);
 	
-	mpz_init_set(t, n1); //On commence avec t = n-1 qui sera pair de base.
+	//Cas spécial si n est égal à 2 car on a un problème quand on essaye de trouver un a car on essaie de le générer 1 < a < 1
+	if(mpz_cmp_ui(n, 2) == 0){
+		return 1;
+	}
+	
+	mpz_init_set(t, n1); //On commence avec t = n-1 qui sera pair de base sauf si n est pair.
 	while(mpz_even_p(t)){ //Tant que t est pair
 		mpz_div_ui(t, t, 2); //On divise t par 2
 		s++; // Et on compte le nombre de fois où on divise t
@@ -93,7 +98,7 @@ int miller_rabin(mpz_t n, int k){
 		mpz_urandomm(a, state, n2);//Genere l'entier a aleatoirement entre 0 < a < n
 		mpz_add_ui(a, a, 1);
 		square_and_multiply(y, a, t, n);
-		cond=0;
+		cond=0; //Condition pour s'assurer que la boucle j ne renvoie pas composé si on tombe sur y == -1 mod n
 		if(mpz_cmp_ui(y, 1) != 0 && mpz_cmp(y, n1) != 0){
 			cond=1;
 			for(j = 1; j<s; j++){
@@ -115,9 +120,9 @@ int miller_rabin(mpz_t n, int k){
 	}
 	return 1;
 	
-	gmp_printf("t : %Zd, ", t);
-	printf("s = %d\n", s);
-	mpz_clears(n1, a, y, two, state, NULL);
+	//gmp_printf("t : %Zd, ", t);
+	//printf("s = %d\n", s);
+	mpz_clears(n1, n2, a, y, two, t, state, NULL);
 }
 
 int main(int argc, char* argv[]){
@@ -131,14 +136,13 @@ int main(int argc, char* argv[]){
 	*/
 
 	if(argc == 3){
-		mpz_t n, res; int k, bool;
-		k = atoi(argv[2]);
+		mpz_t n; int k, bool; //n est l'entier à tester, k le nombre de fois où les algos doivent tester le nombre et bool sert à stocker le résultat envoyer par les algorithmes.
+		k = atoi(argv[2]); //On récupère k des entrées de l'utilisateur
 
-		mpz_init(res);
 		mpz_init_set_str(n, argv[1], 10); //Permet ne se pas se limiter par le int maximum pour notre n
 
-		gmp_printf("n : %Zd\n",n);
-		printf("k : %d\n", k);
+		//gmp_printf("n : %Zd\n",n);
+		//printf("k : %d\n", k);
 		
 		bool = test_de_fermat(n,k);
 		if(bool){
@@ -155,11 +159,11 @@ int main(int argc, char* argv[]){
 			printf("Test de Miller-Rabin = Composé\n");
 		}
 		
-		mpz_clears(n, res, NULL);
+		mpz_clears(n, NULL);
 		return 0;
 	}
 	else{
 		printf("Vous n'avez pas entrer le bon nombre d'arguments lors du lancement du programme.\n");
-		return 1;
+		return -1;
 	}
 }
