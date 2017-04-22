@@ -50,7 +50,13 @@ int test_de_fermat(mpz_t n,int k){
 	
 	//Cas spécial si n est égal à 2 car on a un problème quand on essaye de trouver un a car on essaie de le générer 1 < a < 1
 	if(mpz_cmp_ui(n, 2) == 0){
+		mpz_clears(limite, restmp, a, n1, state, NULL);
 		return 1;
+	}
+	
+	if(mpz_cmp_ui(n, 1) == 0){
+		mpz_clears(limite, restmp, a, n1, state, NULL);
+		return 0;
 	}
 	
 	for(i = 0 ; i < k; i++){
@@ -58,6 +64,7 @@ int test_de_fermat(mpz_t n,int k){
 		mpz_add_ui(a, a, 1); //Genere l'entier a aleatoirement entre 1 < a < n-1
 		square_and_multiply(restmp, a, n1, n); // Effectue a^n-1 mod n
 		if(mpz_cmp_ui(restmp, 1) != 0){ // verifie si le resultat est different de 1
+			mpz_clears(limite, restmp, a, n1, state, NULL);
 			return 0;
 		}
 	}
@@ -83,7 +90,13 @@ int miller_rabin(mpz_t n, int k){
 	
 	//Cas spécial si n est égal à 2 car on a un problème quand on essaye de trouver un a car on essaie de le générer 1 < a < 1
 	if(mpz_cmp_ui(n, 2) == 0){
+		mpz_clears(n1, n2, a, y, two, state, NULL);
 		return 1;
+	}
+	
+	if(mpz_cmp_ui(n, 1) == 0){
+		mpz_clears(n1, n2, a, y, two, state, NULL);
+		return 0;
 	}
 	
 	mpz_init_set(t, n1); //On commence avec t = n-1 qui sera pair de base sauf si n est pair.
@@ -104,6 +117,7 @@ int miller_rabin(mpz_t n, int k){
 			for(j = 1; j<s; j++){
 				square_and_multiply(y, y, two, n);
 				if(mpz_cmp_ui(y, 1) == 0){
+					mpz_clears(n1, n2, a, y, two, t, state, NULL);
 					return 0;
 				}
 				if(mpz_cmp(y, n1) == 0){
@@ -115,9 +129,11 @@ int miller_rabin(mpz_t n, int k){
 		}
 		if(cond == 1)
 		{
+			mpz_clears(n1, n2, a, y, two, t, state, NULL);
 			return 0;
 		}
 	}
+	mpz_clears(n1, n2, a, y, two, t, state, NULL);
 	return 1;
 	
 	//gmp_printf("t : %Zd, ", t);
