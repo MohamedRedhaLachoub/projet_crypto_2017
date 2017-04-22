@@ -4,6 +4,7 @@
 `void square_and_multiply(mpz_t res, mpz_t a, mpz_t exp, mpz_t mod);`
 
 La fonction square_and_multiply utilise les techniques d'exponentiation rapide avec un modulo à mod.
+`(a^exp) % mod`
 
 `int test_de_fermat(mpz_t n, int k);`
 
