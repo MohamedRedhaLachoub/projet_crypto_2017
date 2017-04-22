@@ -71,7 +71,7 @@ int test_de_fermat(mpz_t n,int k){
 //miller rabin, tant que t%2 est 0, t/2, s+1. t = n-1, s est le nombre de division par 2 faites. <-- Initialisation du t ;)
 int miller_rabin(mpz_t n, int k){
 	mpz_t n1, t, a, y, two;
-	int s = 0, i, j, donot = 0;
+	int s = 0, i, j;
 	
 	mpz_inits(a, y, NULL);
 	mpz_init_set(n1, n);
@@ -94,7 +94,6 @@ int miller_rabin(mpz_t n, int k){
 		mpz_urandomm(a, state, n1);//Genere l'entier a aleatoirement entre 0 < a < n
 		mpz_add_ui(a, a, 1);
 		square_and_multiply(y, a, t, n);
-		donot = 0;
 		if(mpz_cmp_ui(y, 1) != 0 && mpz_cmp_si(y, -1) != 0){
 			for(j = 1; j<s; j++){
 				square_and_multiply(y, y, two, n);
@@ -104,13 +103,9 @@ int miller_rabin(mpz_t n, int k){
 				if(mpz_cmp_si(y, -1) == 0){
 					j = s; //On sort du for j
 					break;
-				//	donot = 1;//On ne le marque pas comme composé
 				}
 			}
 			return 0;
-			/*if(donot == 0){
-				return 0;
-			}*/
 		}
 	}
 	return 1;
