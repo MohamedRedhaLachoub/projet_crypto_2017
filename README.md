@@ -15,3 +15,9 @@ Et renvoie 0 si l'entier est composé.
 
 La fonction miller_rabin prend en paramètres un entier de type mpz_t de la bibliothèque GMP et un entier k et exécute k fois le test de Miller-Rabin sur l'entier.
 Renvoie 1 si l'entier est premier, 0 sinon.
+
+`gcc projet_crypto.c -o projet_crypto.out -lgmp`
+
+Commande permettant de compiler le programme ou alors utiliser le Makefile avec la commande `make`.
+
+`./projet_crypto [nombre à tester] [nombre de test à effectuer]`
