@@ -83,14 +83,12 @@ int miller_rabin(mpz_t n, int k){
 	gmp_randinit_default(state);
 	
 	mpz_init_set(t, n1); //On commence avec t = n-1 qui sera pair de base.
-	if(mpz_even_p(t)){ //Tant que t est pair
+	while(mpz_even_p(t)){ //Tant que t est pair
 		mpz_div_ui(t, t, 2); //On divise t par 2
 		s++; // Et on compte le nombre de fois où on divise t
 	}
 	
-	if(mpz_odd_p(t)){
-		printf("t est impair\n");
-	}
+	gmp_printf("t : %Zd, s : %d\n", t, s);
 	
 	for(i = 0; i<k; i++){
 		mpz_urandomm(a, state, n1);//Genere l'entier a aleatoirement entre 0 < a < n
