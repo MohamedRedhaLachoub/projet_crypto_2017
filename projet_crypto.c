@@ -117,7 +117,7 @@ int miller_rabin(mpz_t n, int k){
 	
 	gmp_printf("t : %Zd, ", t);
 	printf("s = %d\n", s);
-	mpz_clears(n1, a, y, two, NULL);
+	mpz_clears(n1, a, y, two, state, NULL);
 }
 
 int main(int argc, char* argv[]){
