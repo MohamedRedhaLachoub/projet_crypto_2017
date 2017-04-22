@@ -1,9 +1,7 @@
 #include <gmp.h>
 #include <stdio.h>
 #include <string.h>
-				
-			
-			
+#include <stdlib.h>			
 			
 void square_and_multiply(mpz_t res, mpz_t a, mpz_t exp, mpz_t mod){
 	//a^exp mod n
