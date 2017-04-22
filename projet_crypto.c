@@ -70,14 +70,15 @@ int test_de_fermat(mpz_t n,int k){
 
 //miller rabin, tant que t%2 est 0, t/2, s+1. t = n-1, s est le nombre de division par 2 faites. <-- Initialisation du t ;)
 int miller_rabin(mpz_t n, int k){
-	mpz_t n1, t, a, y, two;
-	int s = 0, i, j;
+	mpz_t n1, n2, t, a, y, two;
+	int s = 0, i, j, cond;
 	
 	mpz_inits(a, y, NULL);
 	mpz_init_set(n1, n);
+	mpz_init_set(n2, n);
 	mpz_init_set_ui(two, 2);
 	mpz_sub_ui(n1, n1, 1);	
-	
+	mpz_sub_ui(n2, n1, 1);
 	
 	gmp_randstate_t state;
 	gmp_randinit_default(state);
@@ -91,20 +92,27 @@ int miller_rabin(mpz_t n, int k){
 	gmp_printf("t : %Zd, s : %d\n", t, s);
 	
 	for(i = 0; i<k; i++){
-		mpz_urandomm(a, state, n1);//Genere l'entier a aleatoirement entre 0 < a < n
+		mpz_urandomm(a, state, n2);//Genere l'entier a aleatoirement entre 0 < a < n
 		mpz_add_ui(a, a, 1);
+		gmp_printf("%Zd \n",a);
 		square_and_multiply(y, a, t, n);
-		if(mpz_cmp_ui(y, 1) != 0 && mpz_cmp_si(y, -1) != 0){
+		cond=0;
+		if(mpz_cmp_ui(y, 1) != 0 && mpz_cmp(y, n1) != 0){
+			cond=1;
 			for(j = 1; j<s; j++){
 				square_and_multiply(y, y, two, n);
 				if(mpz_cmp_ui(y, 1) == 0){
 					return 0;
 				}
-				if(mpz_cmp_si(y, -1) == 0){
+				if(mpz_cmp(y, n1) == 0){
 					j = s; //On sort du for j
+					cond=0; // on evite le return 0 pour retourner a la boucle principale
 					break;
 				}
 			}
+		}
+		if(cond == 1)
+		{
 			return 0;
 		}
 	}
