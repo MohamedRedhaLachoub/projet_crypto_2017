@@ -105,14 +105,14 @@ int miller_rabin(mpz_t n, int k){
 		s++; // Et on compte le nombre de fois où on divise t
 	}
 	
-	//gmp_printf("t : %Zd, s : %d\n", t, s);
+	//gmp_printf("t : %Zd, s : %d\n", t, s);Test affichage de la decomposition 
 	
 	for(i = 0; i<k; i++){
 		mpz_urandomm(a, state, n2);//Genere l'entier a aleatoirement entre 0 < a < n
 		mpz_add_ui(a, a, 1);
 		square_and_multiply(y, a, t, n);
 		cond=0; //Condition pour s'assurer que la boucle j ne renvoie pas composé si on tombe sur y == -1 mod n
-		if(mpz_cmp_ui(y, 1) != 0 && mpz_cmp(y, n1) != 0){
+		if(mpz_cmp_ui(y, 1) != 0 && mpz_cmp(y, n1) != 0){//on utilise n-1 pour y!=-1
 			cond=1;
 			for(j = 1; j<s; j++){
 				square_and_multiply(y, y, two, n);
@@ -138,18 +138,10 @@ int miller_rabin(mpz_t n, int k){
 	
 	//gmp_printf("t : %Zd, ", t);
 	//printf("s = %d\n", s);
-	mpz_clears(n1, n2, a, y, two, t, state, NULL);
+	//mpz_clears(n1, n2, a, y, two, t, state, NULL);
 }
 
 int main(int argc, char* argv[]){
-
-	/* //Affiche les arguments du programme
-	int i = 0;
-	printf("argc : %d\n", argc);
-	for(i = 0; i<argc; i++){
-		printf("argv[%d] : %s\n", i, argv[i]);
-	}
-	*/
 
 	if(argc == 3){
 		mpz_t n; int k, bool; //n est l'entier à tester, k le nombre de fois où les algos doivent tester le nombre et bool sert à stocker le résultat envoyer par les algorithmes.
@@ -157,7 +149,7 @@ int main(int argc, char* argv[]){
 
 		mpz_init_set_str(n, argv[1], 10); //Permet ne se pas se limiter par le int maximum pour notre n
 
-		//gmp_printf("n : %Zd\n",n);
+		//gmp_printf("n : %Zd\n",n);//Test qui affiche les deux parametres
 		//printf("k : %d\n", k);
 		
 		bool = test_de_fermat(n,k);

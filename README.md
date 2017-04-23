@@ -19,7 +19,7 @@ Renvoie 1 si l'entier est premier, 0 sinon.
 
 Commandes d'utilisation
 ===================================
-Commencer par compiler le programme, il vous avoir installé la bibliothèque GNU MP,
+Commencer par compiler le programme, il vous faut avoir installé la bibliothèque GNU MP,
 vous pouvez ensuite utiliser le Makefile avec la commande make ou la commande : `gcc projet_crypto.c -o projet_crypto.out -lgmp`
 
 Ensuite vous pouvez utiliser le programme comme ceci : 
